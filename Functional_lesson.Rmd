@@ -6,7 +6,7 @@ output: html_document
 ---
 This is a simplified lesson. In the interest of time, some sections were omitted - please refer to textbook for a full lesson!  
 http://adv-r.had.co.nz/Functionals.html
-getwd()
+
 ### What is a  functional?
 A function that takes a function as input and returns a vector. 
 

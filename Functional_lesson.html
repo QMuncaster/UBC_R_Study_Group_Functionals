@@ -68,13 +68,16 @@ img {
 </div>
 
 
-<p>This is a simplified lesson. In the interest of time, some sections were omitted - please refer to textbook for a full lesson!<br /><a href="http://adv-r.had.co.nz/Functionals.html" class="uri">http://adv-r.had.co.nz/Functionals.html</a> getwd() ### What is a functional? A function that takes a function as input and returns a vector.</p>
+<p>This is a simplified lesson. In the interest of time, some sections were omitted - please refer to textbook for a full lesson!<br /><a href="http://adv-r.had.co.nz/Functionals.html" class="uri">http://adv-r.had.co.nz/Functionals.html</a></p>
+<div id="what-is-a-functional" class="section level3">
+<h3>What is a functional?</h3>
+<p>A function that takes a function as input and returns a vector.</p>
 <div id="simple-example-randomise" class="section level4">
 <h4>Simple example: randomise</h4>
 <p>We can get 10 random probabilities using runif:</p>
 <pre class="r"><code>runif(10) # gives us 10 random probabilities (ranging from 0 to 1)</code></pre>
-<pre><code>##  [1] 0.4567161 0.4977817 0.3431592 0.8951633 0.6874990 0.6798048 0.1268440
-##  [8] 0.4197109 0.3505037 0.3644842</code></pre>
+<pre><code>##  [1] 0.94889930 0.60079422 0.53409943 0.83652173 0.03266977 0.85285207
+##  [7] 0.89669685 0.27892949 0.84625332 0.54483156</code></pre>
 <p>Say we want to call various functions on 10 random probabilities - with fresh probabilities every time.<br />This rules out assigning runif(10) to a variable.<br />We can hardcode it to each function:</p>
 <pre class="r"><code>max(runif(10))
 mean(runif(10))</code></pre>
@@ -85,6 +88,7 @@ randomise(mean)
 randomise(max)
 randomise(min)</code></pre>
 <hr />
+</div>
 </div>
 <div id="use-functionals-for-cleaner-code" class="section level3">
 <h3>Use functionals for cleaner code</h3>
@@ -376,16 +380,16 @@ scaleData2</code></pre>
 df2 &lt;- data.frame(x = 1:10, y = Sys.time())
 df2</code></pre>
 <pre><code>##     x                   y
-## 1   1 2017-03-28 23:28:45
-## 2   2 2017-03-28 23:28:45
-## 3   3 2017-03-28 23:28:45
-## 4   4 2017-03-28 23:28:45
-## 5   5 2017-03-28 23:28:45
-## 6   6 2017-03-28 23:28:45
-## 7   7 2017-03-28 23:28:45
-## 8   8 2017-03-28 23:28:45
-## 9   9 2017-03-28 23:28:45
-## 10 10 2017-03-28 23:28:45</code></pre>
+## 1   1 2017-03-29 12:09:12
+## 2   2 2017-03-29 12:09:12
+## 3   3 2017-03-29 12:09:12
+## 4   4 2017-03-29 12:09:12
+## 5   5 2017-03-29 12:09:12
+## 6   6 2017-03-29 12:09:12
+## 7   7 2017-03-29 12:09:12
+## 8   8 2017-03-29 12:09:12
+## 9   9 2017-03-29 12:09:12
+## 10 10 2017-03-29 12:09:12</code></pre>
 <pre class="r"><code>sapply(df2, class) # guesses something that contradicts our assumption - class has 2 values</code></pre>
 <pre><code>## $x
 ## [1] &quot;integer&quot;
