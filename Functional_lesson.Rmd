@@ -1,16 +1,21 @@
 ---
-title: "Advanced R: Functionals"
+title: 'Advanced R: Functionals'
 author: "Textbook by Hadley Wickham, digested notes by Quintin Muncaster"
 date: "March 27, 2017"
-output: html_document
+output:
+  html_document:
+    toc: true
+    toc_float: true
+    code_folding: show
+    highlight: pygments
 ---
 This is a simplified lesson. In the interest of time, some sections were omitted - please refer to textbook for a full lesson!  
 http://adv-r.had.co.nz/Functionals.html
 
-### What is a  functional?
+# What is a  functional?
 A function that takes a function as input and returns a vector. 
 
-#### Simple example: randomise
+## Simple example: randomise
 We can get  10 random probabilities using runif:
 ```{r}
 runif(10) # gives us 10 random probabilities (ranging from 0 to 1)
@@ -35,7 +40,7 @@ randomise(min)
 
 ***
 
-### Use functionals for cleaner code
+# Use functionals for cleaner code
 + Used for functional programming
 + Often used as an alternative to for loops
 + For loops don't explicitly express their goal
@@ -46,7 +51,7 @@ So, let's go through some.
 
 ***
 
-### Useful functional: Lapply
+# Useful functional: Lapply
 Takes a list and a function, applies the function to each element in the list, and returns it as a modified list.  
 
 Question: if this returns a list, but functionals return 'vectors', how is this a functional?  
@@ -57,7 +62,7 @@ Sidenote: each modification on each element is isolated, so computation order do
 Thus, the computations can be done in parallel (dispatched to different cores and then computed in parallel).   
 Note that this is only faster when the computations take longer than sending the computations to different cores.    See textbook for more info.
 
-#### An R implementation of lapply:
+## An R implementation of lapply:
 ```{r}
 lapply2 <- function(x, f, ...) {
   out <- vector("list", length(x)) # create an empty vector with length of list
@@ -69,7 +74,7 @@ lapply2 <- function(x, f, ...) {
 }
 ```   
 
-#### Basic use of lapply
+## Basic use of lapply
 ``` {r}
 myList <- list("apple", "banana", c("grapes", "plums"))
 myList
@@ -92,15 +97,15 @@ lapply(myList, paste, ".txt", sep = "")
 In essence, lapply is calling this function for each element in myList:  
 paste('element in myList', ".txt", sep="")
 
-#### Using lapply with anonymous functions
+## Using lapply with anonymous functions
 We can use another syntax to use anonymous functions.
 ```{r}
-lapply(myList, function(fruit) if(any(fruit=='apple')) paste("red",fruit) else fruit)
+lapply(myList, function(fruit) {if(any(fruit=='apple')) paste("red",fruit) else fruit})
 ```
 In the above example, our anonymous function, being an unnamed function, is
 'if(any(fruit=='apple')) paste("red",fruit) else fruit'.  
 
-#### Varying second/third/... arguments
+## Varying second/third/... arguments
 
 The previous syntax also lets you pass elements as second/third/other arguments to a function.  
 For example, if I want to paste each element (fruit) after "Green":
@@ -122,7 +127,7 @@ lapply(trims, function(trim) mean(x, trim = trim))
 ``` 
 This is equivalent to calling mean on x with each value in the trims vector, and then joining the results in a list.  
 
-#### Aside: understanding trim
+## Aside: understanding trim
 The trim argument specifies what percentage of observations are deleted from each end before computing the mean.
 ```{r}
 x <- c(1:4, 10) # vector of five elements: 1, 2, 3, 4, 10
@@ -137,7 +142,7 @@ Note that the number of elements trimmed off the ends always rounds down:
 mean(x, trim=0.35)# trim 35% off ends; 35% of 5 elements is 1.75 elements; trims one element from each end; output is 3
 ```
 
-#### Exercise 1: lapply 
+## Exercise 1: lapply 
 Why are the following two invocations of lapply() equivalent?
 
 ```{r, eval=FALSE}
@@ -148,7 +153,7 @@ lapply(trims, function(trim) mean(x, trim = trim))
 lapply(trims, mean, x = x)
 ```
 
-#### Why lapply is useful
+## Why lapply is useful
 + more concise than writing a loop
 + accepts dataframe as input, applies function to each column
 (since a dataframe is a list of columns)
@@ -167,7 +172,7 @@ mtcarsModified[] <- lapply(mtcars, function(x) x/mean(x)) # remember you can div
 head(mtcarsModified[])
 ```
 
-#### Exercise 2: Lapply on dataframes
+## Exercise 2: Lapply on dataframes
 
 The function below scales a vector so it falls in the range [0, 1]. How would you apply it to every column of scaleData? 
 
@@ -192,7 +197,7 @@ scaleData2
 
 ***
 
-### Sapply and Vapply
+# Sapply and Vapply
 Like lapply - both take a list and function as input.  
 BUT, they return an atomic vector (instead of a list).
 Recall: atomic vector only contains values of the same type, while a list can contain values of different types.
@@ -203,19 +208,19 @@ Vapply takes an additional argument specifying the output type. Probably safer t
   
 ![sapply and vapply](sapply vapply.PNG)
 
-#### Example where sapply and vapply agree:  
+## Example where sapply and vapply agree:  
 ``` {r}
 sapply(mtcars, is.numeric) # will guess that the output type is 'logical'.
 vapply(mtcars, is.numeric, logical(1)) # explicitly state that output types is 'logical'.
 ```
 
-#### Example where they differ:  
+## Example where they differ:  
 ``` {r}
 sapply(list(), is.numeric)
 vapply(list(), is.numeric, logical(1))
 ```
 
-#### Example where using sapply is dangerous: extracting class of columns where you falsely assume that class is one value, when the class of a column has two values. May cause errors downstream.
+## Example where using sapply is dangerous: extracting class of columns where you falsely assume that class is one value, when the class of a column has two values. May cause errors downstream.
 ``` {r, error=TRUE}
 class(Sys.time()) # note: class(Sys.time()) has two values:
 # POSIXct (# of seconds since 'the epoch') and POSIXt (text format)
@@ -226,8 +231,10 @@ df2
 sapply(df2, class) # guesses something that contradicts our assumption - class has 2 values
 vapply(df2, class, character(1)) # tells us something is wrong (we assumed one value per class, but this is false)
 ```
+
 ***
-### Multiple inputs: Map (very similar to mapply)
+
+# Multiple inputs: Map (very similar to mapply)
 For the previous functionals, we could only vary one argument to the function.
 The function 'Map' lets us vary all arguments.
 
@@ -273,8 +280,10 @@ mtcarsModified[] <- lapply(mtcars, function(x) x / mean(x))
 ```
 
 Note: Map is basically the same as mapply, except mapply will try to simplify the output to a vector (like sapply) unless explicitly told not to. Mapply's notation for arguments is also inconsistent with other functions (see textbook).  
+
 ***
-### Manipulating Matrices and Dataframes
+
+# Manipulating Matrices and Dataframes
 
 There are various base functionals that work on matrices and dataframes.
 The textbook describes apply(), sweep(), and outer() for matrices/dataframes.
