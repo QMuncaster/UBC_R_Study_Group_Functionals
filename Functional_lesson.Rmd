@@ -105,7 +105,7 @@ We can use another syntax to use anonymous functions.
 lapply(myList, function(fruit) {if(any(fruit=='apple')) paste("red",fruit) else fruit})
 ```
 In the above example, our anonymous function, being an unnamed function, is
-'if(any(fruit=='apple')) paste("red",fruit) else fruit'.  
+'function(fruit) {if(any(fruit=='apple')) paste("red",fruit) else fruit}'.  
 
 ## Varying second/third/... arguments
 
