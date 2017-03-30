@@ -6,8 +6,10 @@ output:
   html_document:
     toc: true
     toc_float: true
+    toc_depth: 1
     code_folding: show
     highlight: pygments
+    
 ---
 This is a simplified lesson. In the interest of time, some sections were omitted - please refer to textbook for a full lesson!  
 http://adv-r.had.co.nz/Functionals.html
@@ -234,9 +236,9 @@ vapply(df2, class, character(1)) # tells us something is wrong (we assumed one v
 
 ***
 
-# Multiple inputs: Map (very similar to mapply)
+# Map (very similar to mapply)
 For the previous functionals, we could only vary one argument to the function.
-The function 'Map' lets us vary all arguments.
+The function 'Map' lets us vary more arguments.
 
 Motivating example:  
 Say we have a list of observations and a seperate list of weighted means.
@@ -299,7 +301,7 @@ And here's what plyr can do:
 
 ***   
 
-### Manipulating Lists
+# Manipulating Lists
 Textbook describes:
 
 Reduce(f, x) -  reduces vector x by recursively calling function f.
@@ -321,23 +323,23 @@ Position(f, x) - returns position of first element of x that matches boolean fun
 
 ***
 
-### Loops that should be left as is:
+# Loops that should be left as is
 + Modifying in place
 + Recursive functions
 + While loops
 
 ***
 
-### Closing remarks
+# Closing remarks
 + You've probably used a functional without realizing it. 
 + You can write your own functionals to avoid repeating code. The textbook details an example in 'rolling computations'.
 + There are also details on mathetical functionals in the textbook.
 
 ***
 
-### Answers to selected exercises from textbook
+# Answers to selected exercises from textbook
   
-#### Exercise 1: lapply  
+## Exercise 1: lapply  
 Why are these invocations of lapply equivalent?
 ```{r, eval=FALSE}
 trims <- c(0, 0.1, 0.2, 0.5)
@@ -361,7 +363,7 @@ mean(x, trim='AN ELEMENT OF TRIMS') #pseudocode, do not run
 
 Aside: Both of these approaches are using 'positional mapping' for arguments that are not explicitly assigned with an '='.
 
-#### Exercise 2: Lapply dataframes
+## Exercise 2: Lapply dataframes
 ```{r}
 # apply to every column
 data.frame(lapply(scaleData, scale01))
@@ -370,5 +372,5 @@ data.frame(lapply(scaleData, scale01))
 data.frame(lapply(scaleData2, function(x) if(is.numeric(x)) scale01(x) else x))
 ``` 
 
-#### Some solutions here that I consulted:
+## Some solutions here that I consulted:
 https://bookdown.org/Tazinho/Advanced-R-Solutions/functionals.html
